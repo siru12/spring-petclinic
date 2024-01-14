@@ -1,0 +1,24 @@
+pipeline {
+    agent any 
+    tools{
+        jdk 'java17'
+        maven 'mvn'
+    }
+   stages {
+      stage ('clean workspace') {
+        steps {
+          clearWS()
+       } 
+    }
+      stage ('checkout scm') {
+        steps {
+            checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/siru12/spring-petclinic']])
+        }
+      }
+      stage ('maven compile') {
+         steps {
+            sh 'mvn clean compile'
+         }
+      }
+   } 
+}
